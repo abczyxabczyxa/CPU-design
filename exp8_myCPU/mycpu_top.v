@@ -68,7 +68,7 @@ module mycpu_top(
     always @(*) begin
          casez (id_br_taken)
                  1'b1: inst_sram_rdata_reg = 32'h02800000;
-                default: inst_sram_rdata_reg = inst_sram_rdata; // 保持原�??
+                1'b0, 1'bx, 1'bz: inst_sram_rdata_reg = inst_sram_rdata; // 保持原�??
          endcase
     end
 
@@ -94,7 +94,7 @@ module mycpu_top(
     wire [31:0] id_dram_wdata;
     wire [19:0] id_imm20;
     wire id_src2_is_imm20;
-   // wire id_cancel;   //跳转的话，需要置�?????1
+   // wire id_cancel;   //跳转的话，需要置�???1
     wire id_br_taken;
     wire [31:0]id_br_target;
     wire id_src1_from_ref;
@@ -367,6 +367,6 @@ module mycpu_top(
                         (wb_rf_we&&wb_rd!=0&&((id_src1_from_ref&&(rf_raddr1==wb_rd))||(id_src2_from_ref&&(rf_raddr2==wb_rd))))?  1'b0  :1'b1;
     assign wb_ready_go =rst? 1'b1:(exe_ref_we&&exe_rd!=0&&((id_src1_from_ref&&(rf_raddr1==exe_rd))||(id_src2_from_ref&&(rf_raddr2==exe_rd))))? 1'b0 :
                         (mem_ref_we&&mem_rd!=0&&((id_src1_from_ref&&(rf_raddr1==mem_rd))||(id_src2_from_ref&&(rf_raddr2==mem_rd))))?  1'b0:
-                        (wb_rf_we&&wb_rd!=0&&((id_src1_from_ref&&(rf_raddr1==wb_rd))||(id_src2_from_ref&&(rf_raddr2==wb_rd))))?  1'b0  :1'b1;                
+                        (wb_rf_we&&wb_rd!=0&&((id_src1_from_ref&&(rf_raddr1==wb_rd))||(id_src2_from_ref&&(rf_raddr2==wb_rd))))?  1'b0  :1'b1;               
     
 endmodule

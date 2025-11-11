@@ -23,11 +23,6 @@ module ExE_reg (
     input [31:0] id_dram_wdata,
     input [19:0] id_imm20,
     input id_src2_is_imm20,
-    input id_zero_extend,
-    input id_rdram_need_zero_extend,
-    input id_rdram_need_signed_extend,
-    input [1:0] id_rdram_num;
-    input [1:0] id_wdram_num;
 
     output reg [4:0] exe_rd,
     output reg [31:0] exe_src1,
@@ -50,12 +45,7 @@ module ExE_reg (
     output reg [19:0] exe_imm20,
     output reg exe_src2_is_imm20,
     output reg [31:0] exe_rf_src1,
-    output reg [31:0] exe_rf_src2,
-    output reg exe_zero_extend,
-    output reg exe_rdram_need_zero_extend,
-    output reg exe_rdram_need_signed_extend,
-    output reg [1:0]exe_rdram_num,
-    output reg [1:0]exe_wdram_num
+    output reg [31:0] exe_rf_src2
 );
 
 always @(posedge clk) begin
@@ -82,11 +72,6 @@ always @(posedge clk) begin
         exe_src2_is_imm20 <= 1'b0;
         exe_rf_src1 <= 32'b0;
         exe_rf_src2 <= 32'b0;
-        exe_zero_extend<=1'b0;
-        exe_rdram_need_zero_extend<=1'b0;
-        exe_rdram_need_signed_extend<=1'b0;
-        exe_rdram_num<=2'b0;
-        exe_wdram_num<=2'b0;
     end else begin
         casez (id_ready_go)
 
@@ -113,11 +98,6 @@ always @(posedge clk) begin
                 exe_src2_is_imm20 <= 1'b0;
                 exe_rf_src1 <= 32'b0;
                 exe_rf_src2 <= 32'b0;
-                exe_zero_extend<=1'b0;
-                exe_rdram_need_zero_extend<=1'b0;
-                exe_rdram_need_signed_extend<=1'b0;
-                exe_rdram_num<=2'b0;
-                exe_wdram_num<=2'b0;
             end
             default: begin  // ready 或不确定时都更新
                 exe_rd <= id_rd;
@@ -142,11 +122,6 @@ always @(posedge clk) begin
                 exe_src2_is_imm20 <= id_src2_is_imm20;
                 exe_rf_src1 <= id_src1;
                 exe_rf_src2 <= id_src2;
-                exe_zero_extend<=id_zero_extend;
-                exe_rdram_need_zero_extend<=id_rdram_need_zero_extend;
-                exe_rdram_need_signed_extend<=id_rdram_need_signed_extend;
-                exe_rdram_num<=id_rdram_num;
-                exe_wdram_num<=id_wdram_num;
             end
         endcase
     end

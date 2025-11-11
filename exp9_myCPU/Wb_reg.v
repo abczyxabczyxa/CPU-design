@@ -14,9 +14,6 @@ module Wb_reg (
     input wire [31:0] mem_dram_waddr,
     input wire mem_dram_we,
     input wire [31:0] mem_pc,
-    input wire [1:0]mem_rdram_num,
-    input wire mem_rdram_need_signed_extend,
-    input wire mem_rdram_need_zero_extend,
 
     output reg wb_rf_we,
     output reg [31:0] wb_alu_result,
@@ -28,10 +25,7 @@ module Wb_reg (
     output reg [31:0] wb_dram_waddr,
     output reg [31:0] wb_dram_wdata,
     output reg wb_dram_we,
-    output reg [31:0] wb_pc,
-    output reg [1:0]wb_rdram_num,
-    output reg wb_rdram_need_signed_extend,
-    output reg wb_rdram_need_zero_extend 
+    output reg [31:0] wb_pc
 );
 
 always @(posedge clk ) begin
@@ -47,9 +41,6 @@ always @(posedge clk ) begin
         wb_dram_wdata <= 32'd0;
         wb_dram_we <= 1'b0;
         wb_pc<=32'b0;
-        wb_rdram_num<=2'b0;
-        wb_rdram_need_signed_extend<=1'b0;
-        wb_rdram_need_zero_extend<=1'b0;
     end else if(mem_ready_go)begin
         wb_rf_we <= mem_ref_we;
         wb_alu_result <= mem_alu_result;
@@ -62,9 +53,6 @@ always @(posedge clk ) begin
         wb_dram_wdata <= mem_dram_wdata;
         wb_dram_we <= mem_dram_we;
         wb_pc<=mem_pc;
-        wb_rdram_num<=mem_rdram_num;
-        wb_rdram_need_signed_extend<=mem_rdram_need_signed_extend;
-        wb_rdram_need_zero_extend<=mem_rdram_need_zero_extend;
     end
     else
     begin
@@ -79,9 +67,6 @@ always @(posedge clk ) begin
         wb_dram_wdata <= wb_dram_wdata;
         wb_dram_we <= wb_dram_we;
         wb_pc<=wb_pc;
-        wb_rdram_num<=wb_rdram_num;
-        wb_rdram_need_signed_extend<=wb_rdram_need_signed_extend;
-        wb_rdram_need_zero_extend<=wb_rdram_need_zero_extend;
     end
 end
 

@@ -1,28 +1,28 @@
 module ID_stage(
-    input  wire [31:0] id_inst,          // 32 位指令输�???
+    input  wire [31:0] id_inst,          // 32 位指令输�???
     input wire [31:0] id_rf_rdata1,
     input wire [31:0] id_rf_rdata2,
     input wire [31:0] id_pc,
-    output wire [4:0]  id_rj,            // 寄存�??? rj 编号
-    output wire [4:0]  id_rk,            // 寄存�??? rk 编号
-    output wire [4:0]  id_rd,            // 目标寄存�??? rd 编号 
-    output wire [31:0] id_src1,          // 源操作数1（来�??? rj�???
-    output wire [31:0] id_src2,          // 源操作数2（来�??? rk 或立即数�???
-    output  wire  id_ref_we,        // 寄存器写使能（是否写�??? rd�???
-    output wire [4:0]  id_alu_op,        // ALU 操作�???
-    output   wire     id_dram_we,       // 数据存储器写使能（store 指令�???
-    output   wire   id_dram_re,       // 数据存储器读使能（load 指令�???
-     output  wire      id_src2_is_imm12, // src2 �??? 12 位立即数
+    output wire [4:0]  id_rj,            // 寄存�??? rj 编号
+    output wire [4:0]  id_rk,            // 寄存�??? rk 编号
+    output wire [4:0]  id_rd,            // 目标寄存�??? rd 编号 
+    output wire [31:0] id_src1,          // 源操作数1（来�??? rj�???
+    output wire [31:0] id_src2,          // 源操作数2（来�??? rk 或立即数�???
+    output  wire  id_ref_we,        // 寄存器写使能（是否写�??? rd�???
+    output wire [4:0]  id_alu_op,        // ALU 操作�???
+    output   wire     id_dram_we,       // 数据存储器写使能（store 指令�???
+    output   wire   id_dram_re,       // 数据存储器读使能（load 指令�???
+     output  wire      id_src2_is_imm12, // src2 �??? 12 位立即数
     output wire [11:0] id_imm12,         // 12 位立即数
-    output  wire      id_src2_is_imm5,  // src2 �??? 5 位立即数
+    output  wire      id_src2_is_imm5,  // src2 �??? 5 位立即数
     output wire [4:0]  id_imm5,          // 5 位立即数 */
-    output   wire     id_src2_is_rd,    // src2 �??? rd 寄存器（某些特殊指令�???
-    output wire [15:0] id_imm16,         // 16 位立即数（用�??? B/Bl 等）
-    output wire [25:0] id_imm26,         // 26 位立即数（长跳转�???
-    output   wire     id_src2_is_imm26, // src2 �??? 26 位立即数
-    output     wire   id_src2_is_imm16, // src2 �??? 16 位立即数
-    output     wire   id_res_from_dram, // 结果来自数据存储器（load 指令�???
-    output  wire      id_src2_is_imm20, // src2 �??? 20 位立即数
+    output   wire     id_src2_is_rd,    // src2 �??? rd 寄存器（某些特殊指令�???
+    output wire [15:0] id_imm16,         // 16 位立即数（用�??? B/Bl 等）
+    output wire [25:0] id_imm26,         // 26 位立即数（长跳转�???
+    output   wire     id_src2_is_imm26, // src2 �??? 26 位立即数
+    output     wire   id_src2_is_imm16, // src2 �??? 16 位立即数
+    output     wire   id_res_from_dram, // 结果来自数据存储器（load 指令�???
+    output  wire      id_src2_is_imm20, // src2 �??? 20 位立即数
     output wire [19:0] id_imm20,      // 20 位立即数
     //output wire id_cancel,
     output wire id_br_taken,
@@ -71,7 +71,7 @@ module ID_stage(
     assign id_rj = id_inst[9:5];         
     assign id_rk = id_inst[14:10];       
 
-    // 立即数提�???
+    // 立即数提�???
     assign id_imm5  = id_inst[14:10];    
     assign id_imm12 = id_inst[21:10];   
     assign id_imm16 = id_inst[25:10];    
@@ -131,7 +131,7 @@ module ID_stage(
    
     assign id_ref_we = (inst_add_w | inst_sub_w | inst_slt | inst_sltu | inst_nor | 
                       inst_and | inst_or | inst_xor | inst_slli_w | inst_srli_w | 
-                      inst_srai_w | inst_addi_w | inst_ld_w | inst_lu12i_w | inst_jirl | inst_bl)&&(id_inst!=32'h02800000);
+                      inst_srai_w | inst_addi_w | inst_ld_w | inst_lu12i_w | inst_jirl | inst_bl);
 
     assign id_dram_we = inst_st_w;
     assign id_dram_re = inst_ld_w;
@@ -158,6 +158,6 @@ module ID_stage(
     
 
     assign id_src1_from_ref = inst_add_w | inst_sub_w | inst_addi_w | inst_slt |inst_sltu|inst_or|inst_nor|inst_and|inst_xor|inst_slli_w|inst_srai_w|inst_srli_w|inst_beq|inst_bne|inst_jirl|inst_ld_w|inst_st_w;
-    assign id_src2_from_ref = inst_add_w |inst_sub_w|inst_lu12i_w| inst_slt|inst_sltu|inst_or|inst_nor|inst_and|inst_xor|inst_beq|inst_bne|inst_lu12i_w;
+    assign id_src2_from_ref = inst_add_w |inst_sub_w|inst_lu12i_w| inst_slt|inst_sltu|inst_or|inst_nor|inst_and|inst_xor|inst_beq|inst_bne|inst_lu12i_w|inst_st_w|inst_ld_w;
 
 endmodule

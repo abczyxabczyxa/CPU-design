@@ -61,7 +61,7 @@ always @(posedge clk) begin
         exe_src2_is_imm12 <= 1'b0;
         exe_src2_is_imm5 <= 1'b0;
         exe_imm5 <= 5'd0;
-        exe_pc <= 32'h1bfffffc;
+        exe_pc <= 32'd0;
         exe_imm16 <= 16'd0;
         exe_imm26 <= 26'd0;
         exe_src2_is_imm26 <= 1'b0;
@@ -75,7 +75,7 @@ always @(posedge clk) begin
     end else begin
         casez (id_ready_go)
 
-            1'b0: begin  // �? ready，保持原�?
+            1'b0: begin  // 不 ready，保持原值
                 exe_rd <= 5'd0;
                 exe_src1 <= 32'd0;
                 exe_src2 <= 32'd0;
@@ -87,7 +87,7 @@ always @(posedge clk) begin
                 exe_src2_is_imm12 <= 1'b0;
                 exe_src2_is_imm5 <= 1'b0;
                 exe_imm5 <= 5'd0;
-                 exe_pc <= 32'h1bfffffc;
+                 exe_pc <= 32'd0;
                 exe_imm16 <= 16'd0;
                 exe_imm26 <= 26'd0;
                 exe_src2_is_imm26 <= 1'b0;

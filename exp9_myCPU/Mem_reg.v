@@ -13,11 +13,6 @@ module Mem_reg (
     input wire [31:0] exe_dram_waddr,
     input wire [31:0] exe_dram_wdata,
     input wire [31:0] exe_pc,
-    input wire [1:0] exe_rdram_num;
-    input wire exe_rdram_need_signed_extend;
-    input wire exe_rdram_need_zero_extend;
-    input wire [1:0]exe_wdram_num;
-
     output reg mem_ref_we,
     output reg [31:0] mem_alu_result,
     output reg mem_dram_re,
@@ -28,11 +23,7 @@ module Mem_reg (
     output reg mem_res_from_dram,
     output reg [31:0] mem_dram_wdata,
     output reg [31:0] mem_dram_waddr,
-    output reg [31:0] mem_pc,
-    output reg [1:0] mem_rdram_num;
-    output reg mem_rdram_need_signed_extend;
-    output reg mem_rdram_need_zero_extend;
-    output reg [1:0] mem_wdram_num;
+    output reg [31:0] mem_pc
 );
 
 always @(posedge clk) begin
@@ -48,10 +39,6 @@ always @(posedge clk) begin
         mem_dram_wdata   <= 32'd0;
         mem_dram_waddr   <= 32'd0;
         mem_pc           <= 32'd0;
-        mem_rdram_num <=2'b0;
-     mem_rdram_need_signed_extend<=1'b0;
-     mem_rdram_need_zero_extend<=1'b0;
-        mem_wdram_num<=2'b0;
     end else begin
         casez (exe_ready_go)
             1'b1, 1'bx, 1'bz: begin // ready 或不确定都更新
@@ -66,10 +53,6 @@ always @(posedge clk) begin
                 mem_dram_wdata   <= exe_dram_wdata;
                 mem_dram_waddr   <= exe_dram_waddr;
                 mem_pc           <= exe_pc;
-                mem_rdram_num <=exe_rdram_num;
-                mem_rdram_need_signed_extend<=exe_rdram_need_signed_extend;
-                mem_rdram_need_zero_extend<=exe_rdram_need_zero_extend;
-                mem_wdram_num<=exe_wdram_num;
             end
             1'b0: begin // 不 ready，保持当前值
                 mem_ref_we       <= mem_ref_we;
@@ -83,10 +66,6 @@ always @(posedge clk) begin
                 mem_dram_wdata   <= mem_dram_wdata;
                 mem_dram_waddr   <= mem_dram_waddr;
                 mem_pc           <= mem_pc;
-                mem_rdram_need_signed_extend<=mem_rdram_need_signed_extend;
-                mem_rdram_need_zero_extend<=mem_rdram_need_zero_extend;
-                 mem_rdram_num <=mem_rdram_num;
-                 mem_wdram_num<=mem_wdram_num;
             end
         endcase
     end
